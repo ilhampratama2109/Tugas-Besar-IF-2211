@@ -3,6 +3,7 @@ package za.co.entelect.challenge;
 import za.co.entelect.challenge.command.*;
 import za.co.entelect.challenge.entities.*;
 import za.co.entelect.challenge.enums.Terrain;
+import za.co.entelect.challenge.enums.PowerUps;
 
 import java.util.*;
 
@@ -17,7 +18,15 @@ public class Bot {
     private GameState gameState;
     private Car opponent;
     private Car myCar;
+    private static boolean pilih;
     private final static Command FIX = new FixCommand();
+    private final static Command ACCELERATE = new AccelerateCommand();
+    private final static Command LIZARD = new LizardCommand();
+    private final static Command OIL = new OilCommand();
+    private final static Command BOOST = new BoostCommand();
+    private final static Command EMP = new EmpCommand();
+    private final static Command TURN_RIGHT = new ChangeLaneCommand(1);
+    private final static Command TURN_LEFT = new ChangeLaneCommand(-1);
 
     public Bot(Random random, GameState gameState) {
         this.random = random;
@@ -31,13 +40,41 @@ public class Bot {
 
     public Command run() {
         List<Object> blocks = getBlocksInFront(myCar.position.lane, myCar.position.block);
+        List<Object> nextBlock = blocks.subList(0,1);
+
         if (myCar.damage >= 5) {
-            return new FixCommand();
+            return FIX;
         }
-        if (blocks.contains(Terrain.MUD)) {
-            int i = random.nextInt(directionList.size());
-            return new ChangeLaneCommand(directionList.get(i));
+
+        /*jika ada daerah lumpur, oli, atau dinding */
+        if(blocks.contains(Terrain.MUD) || blocks.contains(Terrain.OIL_SPILL) || blocks.contains(Terrain.WALL)){
+            if(PunyaPower(PowerUps.LIZARD, myCar.powerups)){
+                return LIZARD;
+            }
+
+            if (nextBlock.contains(Terrain.MUD) || nextBlock.contains(Terrain.OIL_SPILL) || nextBlock.contains(Terrain.WALL)){
+                int i = random.nextInt(directionList.size());
+                return new ChangeLaneCommand(directionList.get(i));
+            }
         }
+
+        /*menggunakan command */
+        if (myCar.speed <= 3){
+            return ACCELERATE;
+        }
+        /*menggunakan boost */
+        if(PunyaPower(PowerUps.BOOST, myCar.powerups)){
+            return BOOST;
+        }
+        if(myCar.speed == maxSpeed){
+            if(PunyaPower(PowerUps.OIL, myCar.powerups)){
+                return OIL;
+            }
+            if(PunyaPower(PowerUps.EMP, myCar.powerups)){
+                return EMP;
+            }
+        }
+
         return new AccelerateCommand();
     }
 
@@ -62,4 +99,12 @@ public class Bot {
         return blocks;
     }
 
+    private boolean PunyaPower(PowerUps Will_Use, PowerUps[] available){
+        for(PowerUps powerUp : available){
+            if(powerUp.equals(Will_Use)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
