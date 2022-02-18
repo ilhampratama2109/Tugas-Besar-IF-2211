@@ -177,7 +177,7 @@ public class Bot {
         if (SpeedMax > blocks.size()) {
             tmp = blocks.size();
         }
-        for (int j = 0; j < tmp; l++) {
+        for (int j = 0; j < tmp; j++) {
             if (blocks.get(j).terrain == Terrain.MUD || blocks.get(j).terrain == Terrain.OIL_SPILL) {
                 jml += 1;
             } else if (blocks.get(j).terrain == Terrain.WALL || blocks.get(j).isOccupiedByCyberTruck) {
