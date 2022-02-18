@@ -191,9 +191,9 @@ public class Bot {
         return false;
     }
     
-    private int getState(int SpeedMax) {
+    private int getState(int maxSpeed) {
         int State = 0;
-        switch (SpeedMax) {
+        switch (maxSpeed) {
             case 15:
                 State = 6;
                 break;
@@ -217,9 +217,9 @@ public class Bot {
     }
    
     
-    private int countSpeedReduction(List<Lane> blocks, int SpeedMax) {
-        int tmp= SpeedMax,jml=0;
-        if (SpeedMax > blocks.size()) {
+    private int countSpeedReduction(List<Lane> blocks, int maxSpeed) {
+        int tmp= maxSpeed,jml=0;
+        if (maxSpeed > blocks.size()) {
             tmp = blocks.size();
         }
         for (int j = 0; j < tmp; j++) {
@@ -232,10 +232,10 @@ public class Bot {
                 jml = 5;
             }
         }
-        if (getState(SpeedMax) - jml == 2) {
+        if (getState(maxSpeed) - jml == 2) {
             jml += 1;
-        } else if (getState(SpeedMax) - jml < 1) {
-            jml = getState(SpeedMax) - 1;
+        } else if (getState(maxSpeed) - jml < 1) {
+            jml = getState(maxSpeed) - 1;
         }
         return jml;
     }
