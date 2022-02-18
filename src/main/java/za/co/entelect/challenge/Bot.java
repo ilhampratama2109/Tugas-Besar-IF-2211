@@ -75,6 +75,12 @@ public class Bot {
             }
         }
 
+        if(PunyaPower(PowerUps.TWEET, myCar.powerups)){
+            int x = opponent.position.block;
+            int y = opponent.position.lane;
+            return new TweetCommand(y, x +1 );
+        }
+
         return new AccelerateCommand();
     }
 
@@ -107,4 +113,6 @@ public class Bot {
         }
         return false;
     }
+
+
 }
