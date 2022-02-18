@@ -104,7 +104,7 @@ public class Bot {
         }
         return blocks;
     }
-    private List<Lane> getBlocksOnLeft(int lane, int block, GameState gameState) {
+    private List<Object> getBlocksOnLeft(int lane, int block, GameState gameState) {
         List<Lane[]> map = gameState.lanes;
         List<Lane> blocks = new ArrayList<>();
         int startBlock2 = map.get(0)[0].position.block;
@@ -120,7 +120,7 @@ public class Bot {
         return blocks;
     }
 
-    private List<Lane> getBlocksOnRight(int lane, int block, GameState gameState) {
+    private List<Object> getBlocksOnRight(int lane, int block, GameState gameState) {
         List<Lane[]> map = gameState.lanes;
         List<Lane> blocks = new ArrayList<>();
         int startBlock3 = map.get(0)[0].position.block;
