@@ -79,7 +79,7 @@ public class Bot {
             return FIX;
         }else{
             if(myCar.speed < 15){
-                int speed = countSpeedReduction(blocks, 15);
+                int speed = countSpeedReduction(frontblocks, 15);
                 if (speed == 0){
                     if(PunyaPower(PowerUps.BOOST, myCar.powerups)){
                         if(myCar.speed == 3){
@@ -89,7 +89,7 @@ public class Bot {
                                 return ACCELERATE;
                             }else{
                                 if(opponent.position.block > myCar.position.block){
-                                    if(PunyaPower(PowerUps.EMP, myCar.powerups)){
+                                    if(PunyaPower(PowerUps.EMP, myCar.powerups) && opponent.position.lane == myCar.position.lane){
                                         return EMP;
                                     }else if(PunyaPower(PowerUps.TWEET, myCar.powerups)){
                                         return new TweetCommand(opponent.position.lane, opponent.position.block+1);
@@ -99,6 +99,8 @@ public class Bot {
                                 }else{
                                     if(PunyaPower(PowerUps.OIL, myCar.powerups)){
                                         return OIL;
+                                    }else{
+                                        return DO_NOTHING;
                                     }
                                 }
                             }
@@ -108,7 +110,7 @@ public class Bot {
                             return ACCELERATE;
                         }else{
                             if(opponent.position.block > myCar.position.block){
-                                if(PunyaPower(PowerUps.EMP, myCar.powerups)){
+                                if(PunyaPower(PowerUps.EMP, myCar.powerups) && opponent.position.lane == myCar.position.lane){
                                     return EMP;
                                 }else if(PunyaPower(PowerUps.TWEET, myCar.powerups)){
                                     return new TweetCommand(opponent.position.lane, opponent.position.block+1);
@@ -155,7 +157,7 @@ public class Bot {
                             }else{
                                 if(frontSpeedReduction < leftSpeedReduction || frontSpeedReduction < rightSpeedReduction){
                                     if(opponent.position.block > myCar.position.block){
-                                        if(PunyaPower(PowerUps.EMP, myCar.powerups)){
+                                        if(PunyaPower(PowerUps.EMP, myCar.powerups) && opponent.position.lane == myCar.position.lane){
                                             return EMP;
                                         }else if(PunyaPower(PowerUps.TWEET, myCar.powerups)){
                                             return new TweetCommand(opponent.position.lane, opponent.position.block+1);
@@ -189,7 +191,7 @@ public class Bot {
      * Returns map of blocks and the objects in the for the current lanes, returns the amount of blocks that can be
      * traversed at max speed.
      **/
-    private List<Object> getBlocksInFront(int lane, int block, GameState gameState) {
+    private List<Lane> getBlocksInFront(int lane, int block, GameState gameState) {
         List<Lane[]> map = gameState.lanes;
         List<Lane> blocks = new ArrayList<>();
         int startBlock = map.get(0)[0].position.block;
@@ -205,7 +207,7 @@ public class Bot {
         }
         return blocks;
     }
-    private List<Object> getBlocksOnLeft(int lane, int block, GameState gameState) {
+    private List<Lane> getBlocksOnLeft(int lane, int block, GameState gameState) {
         List<Lane[]> map = gameState.lanes;
         List<Lane> blocks = new ArrayList<>();
         int startBlock2 = map.get(0)[0].position.block;
@@ -221,7 +223,7 @@ public class Bot {
         return blocks;
     }
 
-    private List<Object> getBlocksOnRight(int lane, int block, GameState gameState) {
+    private List<Lane> getBlocksOnRight(int lane, int block, GameState gameState) {
         List<Lane[]> map = gameState.lanes;
         List<Lane> blocks = new ArrayList<>();
         int startBlock3 = map.get(0)[0].position.block;
@@ -281,7 +283,7 @@ public class Bot {
         for (int j = 0; j < tmp; j++) {
             if (blocks.get(j).terrain == Terrain.MUD || blocks.get(j).terrain == Terrain.OIL_SPILL) {
                 jml += 1;
-            } else if (blocks.get(j).terrain == Terrain.WALL || blocks.get(j).isOccupiedByCyberTruck) {
+            } else if (blocks.get(j).terrain == Terrain.WALL) {
                 jml += 5;
             }
             if (jml > 5) {
