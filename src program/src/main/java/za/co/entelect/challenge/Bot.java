@@ -62,18 +62,6 @@ public class Bot {
         if (myCar.position.lane > 1) {
             List<Lane> leftblocks = getBlocksOnLeft(myCar.position.lane, myCar.position.block, gameState);
             leftSpeedReduction = countSpeedReduction(leftBlocks, Bot.maxSpeed);
-            /*jika ada daerah lumpur, oli, atau dinding */
-            if(leftblocks.contains(Terrain.MUD) || leftblocks.contains(Terrain.OIL_SPILL) || leftblocks.contains(Terrain.WALL)){
-                if(PunyaPower(PowerUps.LIZARD, myCar.powerups)){
-                    return LIZARD;
-                }
-
-                if (leftblocks.contains(Terrain.MUD) || leftblocks.contains(Terrain.OIL_SPILL) || leftblocks.contains(Terrain.WALL)){
-                    int i = random.nextInt(directionList.size());
-                    return new ChangeLaneCommand(directionList.get(i));
-                }
-            }
-
         } else {
             List<Lane> leftblocks = new ArrayList<>();
             leftSpeedReduction = 99;
@@ -81,18 +69,6 @@ public class Bot {
         if (myCar.position.lane < 4) {
             List<Lane> rightblocks = getBlocksOnRight(myCar.position.lane, myCar.position.block, gameState);
             rightSpeedReduction = countSpeedReduction(rightBlocks, Bot.maxSpeed);
-            /*jika ada daerah lumpur, oli, atau dinding */
-            if(rightblocks.contains(Terrain.MUD) || rightblocks.contains(Terrain.OIL_SPILL) || rightblocks.contains(Terrain.WALL)){
-                if(PunyaPower(PowerUps.LIZARD, myCar.powerups)){
-                    return LIZARD;
-                }
-
-                if (rightblocks.contains(Terrain.MUD) || rightblocks.contains(Terrain.OIL_SPILL) || rightblocks.contains(Terrain.WALL)){
-                    int i = random.nextInt(directionList.size());
-                    return new ChangeLaneCommand(directionList.get(i));
-                }
-            }
-         
         } else {
             List<Lane> rightblocks = new ArrayList<>();
             rightSpeedReduction = 99;
