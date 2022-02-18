@@ -100,32 +100,111 @@ public class Bot {
 
         if (myCar.damage >= 2) {
             return FIX;
-        }
-
-
-        /*menggunakan command */
-        if (myCar.speed <= 3){
-            return ACCELERATE;
-        }
-        /*menggunakan boost */
-        if(PunyaPower(PowerUps.BOOST, myCar.powerups)){
-            return BOOST;
-        }
-        if(myCar.speed == maxSpeed){
-            if(PunyaPower(PowerUps.OIL, myCar.powerups)){
-                return OIL;
+        }else{
+            if(myCar.speed < 15){
+                int speed = countSpeedReduction(blocks, 15);
+                if (speed == 0){
+                    if(PunyaPower(PowerUps.BOOST, myCar.powerups)){
+                        if(myCar.speed == 3){
+                            return BOOST;
+                        }else{
+                            if (myCar.speed < maxSpeed){
+                                return ACCELERATE;
+                            }else{
+                                if(opponent.position.block > myCar.position.block){
+                                    if(PunyaPower(PowerUps.EMP, myCar.powerups)){
+                                        return EMP;
+                                    }else if(PunyaPower(PowerUps.TWEET, myCar.powerups)){
+                                        return new TweetCommand(opponent.position.lane, opponent.position.block+1);
+                                    }else{
+                                        return DO_NOTHING;
+                                    }
+                                }else{
+                                    if(PunyaPower(PowerUps.OIL, myCar.powerups)){
+                                        return OIL;
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        if(myCar.speed < maxSpeed){
+                            return ACCELERATE;
+                        }else{
+                            if(opponent.position.block > myCar.position.block){
+                                if(PunyaPower(PowerUps.EMP, myCar.powerups)){
+                                    return EMP;
+                                }else if(PunyaPower(PowerUps.TWEET, myCar.powerups)){
+                                    return new TweetCommand(opponent.position.lane, opponent.position.block+1);
+                                }else{
+                                    return DO_NOTHING;
+                                }
+                            }else{
+                                if(PunyaPower(PowerUps.OIL, myCar.powerups)){
+                                    return OIL;
+                                }else{
+                                    return DO_NOTHING;
+                                }
+                            }
+                        }
+                    }
+                }
+                else{
+                    if(myCar.speed < maxSpeed){
+                        if(frontSpeedReduction <= leftSpeedReduction || frontSpeedReduction <= rightSpeedReduction){
+                            return ACCELERATE;
+                        }else{
+                            if(leftSpeedReduction < rightSpeedReduction){
+                                return TURN_LEFT;
+                            }else{
+                                return TURN_RIGHT;
+                            }
+                        }
+                    }else{
+                        if(leftSpeedReduction > 0 && rightSpeedReduction == 0){
+                            return TURN_RIGHT;
+                        }else if(leftSpeedReduction ==0 && rightSpeedReduction > 0){
+                            return TURN_LEFT;
+                        }else if(leftSpeedReduction ==0 && rightSpeedReduction == 0){
+                            Random random = new Random();
+                            int x = random.nextInt(2);
+                            if (x == 0){
+                                return TURN_LEFT;
+                            }else{
+                                return TURN_RIGHT;
+                            }
+                        }else{
+                            if(PunyaPower(PowerUps.LIZARD, myCar.powerups)){
+                                return LIZARD;
+                            }else{
+                                if(frontSpeedReduction < leftSpeedReduction || frontSpeedReduction < rightSpeedReduction){
+                                    if(opponent.position.block > myCar.position.block){
+                                        if(PunyaPower(PowerUps.EMP, myCar.powerups)){
+                                            return EMP;
+                                        }else if(PunyaPower(PowerUps.TWEET, myCar.powerups)){
+                                            return new TweetCommand(opponent.position.lane, opponent.position.block+1);
+                                        }else{
+                                            return DO_NOTHING;
+                                        }
+                                    }else{
+                                        if(PunyaPower(PowerUps.OIL, myCar.powerups)){
+                                            return OIL;
+                                        }else{
+                                            return DO_NOTHING;
+                                        }
+                                    }
+                                }else{
+                                    if(leftSpeedReduction < rightSpeedReduction){
+                                        return TURN_LEFT;
+                                    }else{
+                                        return TURN_RIGHT;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            if(PunyaPower(PowerUps.EMP, myCar.powerups)){
-                return EMP;
-            }
         }
-
-        if(PunyaPower(PowerUps.TWEET, myCar.powerups)){
-            int x = opponent.position.block;
-            int y = opponent.position.lane;
-            return new TweetCommand(y, x +1 );
-        }
-
         return new AccelerateCommand();
     }
 
