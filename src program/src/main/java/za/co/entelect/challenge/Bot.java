@@ -8,13 +8,14 @@ import za.co.entelect.challenge.enums.PowerUps;
 import java.util.*;
 
 import static java.lang.Math.max;
+import java.security.SecureRandom
 
 public class Bot {
 
     private static final int maxSpeed = 9;
     private List<Integer> directionList = new ArrayList<>();
 
-    private Random random;
+    private final Random random;
     private GameState gameState;
     private Car opponent;
     private Car myCar;
@@ -39,7 +40,7 @@ public class Bot {
     }
 
     public Command run() {
-        List<Lane> blocks = new ArrayList<>();
+        List<Lane> frontblocks = new ArrayList<>();
         frontblocks = getBlocksInFront(myCar.position.lane, myCar.position.block,gameState);
         int frontSpeedReduction;
         int leftSpeedReduction;
@@ -52,7 +53,7 @@ public class Bot {
                 return LIZARD;
             }
 
-            if (nextBlock.contains(Terrain.MUD) || nextBlock.contains(Terrain.OIL_SPILL) || nextBlock.contains(Terrain.WALL)){
+            if (frontblocks.contains(Terrain.MUD) || frontblocks.contains(Terrain.OIL_SPILL) || frontblocks.contains(Terrain.WALL)){
                 int i = random.nextInt(directionList.size());
                 return new ChangeLaneCommand(directionList.get(i));
             }
@@ -66,14 +67,14 @@ public class Bot {
                     return LIZARD;
                 }
 
-                if (nextBlock.contains(Terrain.MUD) || nextBlock.contains(Terrain.OIL_SPILL) || nextBlock.contains(Terrain.WALL)){
+                if (leftblocks.contains(Terrain.MUD) || leftblocks.contains(Terrain.OIL_SPILL) || leftblocks.contains(Terrain.WALL)){
                     int i = random.nextInt(directionList.size());
                     return new ChangeLaneCommand(directionList.get(i));
                 }
             }
 
         } else {
-            List<Lane> leftBlocks = new ArrayList<>();
+            List<Lane> leftblocks = new ArrayList<>();
             leftSpeedReduction = 99;
         }
         if (myCar.position.lane < 4) {
@@ -85,14 +86,14 @@ public class Bot {
                     return LIZARD;
                 }
 
-                if (nextBlock.contains(Terrain.MUD) || nextBlock.contains(Terrain.OIL_SPILL) || nextBlock.contains(Terrain.WALL)){
+                if (rightblocks.contains(Terrain.MUD) || rightblocks.contains(Terrain.OIL_SPILL) || rightblocks.contains(Terrain.WALL)){
                     int i = random.nextInt(directionList.size());
                     return new ChangeLaneCommand(directionList.get(i));
                 }
             }
          
         } else {
-            List<Lane> rightBlocks = new ArrayList<>();
+            List<Lane> rightblocks = new ArrayList<>();
             rightSpeedReduction = 99;
         }
        
@@ -191,7 +192,7 @@ public class Bot {
     }
     
     private int getState(int SpeedMax) {
-        int state = 0;
+        int State = 0;
         switch (SpeedMax) {
             case 15:
                 State = 6;
