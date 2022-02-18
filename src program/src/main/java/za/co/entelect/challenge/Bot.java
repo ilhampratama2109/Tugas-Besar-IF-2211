@@ -21,6 +21,7 @@ public class Bot {
     private Car myCar;
     private static boolean pilih;
     private final static Command FIX = new FixCommand();
+    private final static Command DO_NOTHING = new DoNothingCommand();
     private final static Command ACCELERATE = new AccelerateCommand();
     private final static Command LIZARD = new LizardCommand();
     private final static Command OIL = new OilCommand();
