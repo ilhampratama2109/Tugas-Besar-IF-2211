@@ -8,7 +8,7 @@ import za.co.entelect.challenge.enums.PowerUps;
 import java.util.*;
 
 import static java.lang.Math.max;
-import java.security.SecureRandom
+import java.security.SecureRandom;
 
 public class Bot {
 
