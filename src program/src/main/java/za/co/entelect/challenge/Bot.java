@@ -46,7 +46,7 @@ public class Bot {
         int leftSpeedReduction;
         int rightSpeedReduction;
 
-        frontSpeedReduction = countSpeedReduction(frontBlocks, Bot.maxSpeed);
+        frontSpeedReduction = countSpeedReduction(frontblocks, Bot.maxSpeed);
         /*jika ada daerah lumpur, oli, atau dinding */
         if(frontblocks.contains(Terrain.MUD) || frontblocks.contains(Terrain.OIL_SPILL) || frontblocks.contains(Terrain.WALL)){
             if(PunyaPower(PowerUps.LIZARD, myCar.powerups)){
