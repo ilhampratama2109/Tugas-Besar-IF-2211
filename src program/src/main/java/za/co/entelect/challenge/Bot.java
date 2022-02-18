@@ -146,7 +146,7 @@ public class Bot {
         return false;
     }
     
-    private int getdState(int SpeedMax) {
+    private int getState(int SpeedMax) {
         int state = 0;
         switch (SpeedMax) {
             case 15:
