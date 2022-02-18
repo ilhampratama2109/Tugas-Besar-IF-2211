@@ -104,6 +104,38 @@ public class Bot {
         }
         return blocks;
     }
+    private List<Lane> getBlocksOnLeft(int lane, int block, GameState gameState) {
+        List<Lane[]> map = gameState.lanes;
+        List<Lane> blocks = new ArrayList<>();
+        int startBlock2 = map.get(0)[0].position.block;
+
+        Lane[] laneList = map.get(lane - 2);
+        for (int j = block - startBlock2; j <= block - startBlock2 + 15; j++) {
+            if (laneList[j] == null || laneList[j].terrain == Terrain.FINISH) {
+                break;
+            }
+
+            blocks.add(laneList[j]);
+        }
+        return blocks;
+    }
+
+    private List<Lane> getBlocksOnRight(int lane, int block, GameState gameState) {
+        List<Lane[]> map = gameState.lanes;
+        List<Lane> blocks = new ArrayList<>();
+        int startBlock3 = map.get(0)[0].position.block;
+
+        Lane[] laneList = map.get(lane);
+        for (int k = block - startBlock3; k <= block - startBlock3 + 15; k++) {
+            if (laneList[k] == null || laneList[k].terrain == Terrain.FINISH) {
+                break;
+            }
+
+            blocks.add(laneList[k]);
+        }
+        return blocks;
+    }
+
 
     private boolean PunyaPower(PowerUps Will_Use, PowerUps[] available){
         for(PowerUps powerUp : available){
