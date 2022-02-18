@@ -39,8 +39,8 @@ public class Bot {
     }
 
     public Command run() {
-        List<Object> blocks = getBlocksInFront(myCar.position.lane, myCar.position.block);
-        List<Object> nextBlock = blocks.subList(0,1);
+        List<Lane> blocks = new ArrayList<>();
+        blocks = getBlocksInFront(myCar.position.lane, myCar.position.block);
 
         if (myCar.damage >= 5) {
             return FIX;
@@ -88,18 +88,18 @@ public class Bot {
      * Returns map of blocks and the objects in the for the current lanes, returns the amount of blocks that can be
      * traversed at max speed.
      **/
-    private List<Object> getBlocksInFront(int lane, int block) {
+    private List<Object> getBlocksInFront(int lane, int block, GameState gameState) {
         List<Lane[]> map = gameState.lanes;
-        List<Object> blocks = new ArrayList<>();
+        List<Lane> blocks = new ArrayList<>();
         int startBlock = map.get(0)[0].position.block;
 
         Lane[] laneList = map.get(lane - 1);
-        for (int i = max(block - startBlock, 0); i <= block - startBlock + Bot.maxSpeed; i++) {
+        for (int i = block - startBlock-1; i <= block - startBlock + 16; i++) {
             if (laneList[i] == null || laneList[i].terrain == Terrain.FINISH) {
                 break;
             }
 
-            blocks.add(laneList[i].terrain);
+            blocks.add(laneList[i]);
 
         }
         return blocks;
