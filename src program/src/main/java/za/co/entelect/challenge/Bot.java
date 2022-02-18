@@ -145,6 +145,55 @@ public class Bot {
         }
         return false;
     }
+    
+    private int getdState(int SpeedMax) {
+        int state = 0;
+        switch (SpeedMax) {
+            case 15:
+                State = 6;
+                break;
+            case 9:
+                State = 5;
+                break;
+            case 8:
+                State = 4;
+                break;
+            case 6:
+                State = 3;
+                break;
+            case 5:
+                State = 2;
+                break;
+            case 3:
+                State = 1;
+                break;
+        }
+        return State;
+    }
+   
+    
+    private int countSpeedReduction(List<Lane> blocks, int SpeedMax) {
+        int tmp= SpeedMax,jml=0;
+        if (SpeedMax > blocks.size()) {
+            tmp = blocks.size();
+        }
+        for (int j = 0; j < tmp; l++) {
+            if (blocks.get(j).terrain == Terrain.MUD || blocks.get(j).terrain == Terrain.OIL_SPILL) {
+                jml += 1;
+            } else if (blocks.get(j).terrain == Terrain.WALL || blocks.get(j).isOccupiedByCyberTruck) {
+                jml += 5;
+            }
+            if (jml > 5) {
+                jml = 5;
+            }
+        }
+        if (getState(SpeedMax) - jml == 2) {
+            jml += 1;
+        } else if (getState(SpeedMax) - jml < 1) {
+            jml = getState(SpeedMax) - 1;
+        }
+        return jml;
+    }
 
 
 }
