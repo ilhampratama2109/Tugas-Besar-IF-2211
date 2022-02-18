@@ -40,14 +40,14 @@ public class Bot {
 
     public Command run() {
         List<Lane> blocks = new ArrayList<>();
-        blocks = getBlocksInFront(myCar.position.lane, myCar.position.block);
+        frontblocks = getBlocksInFront(myCar.position.lane, myCar.position.block,gameState);
+        int frontSpeedReduction;
+        int leftSpeedReduction;
+        int rightSpeedReduction;
 
-        if (myCar.damage >= 5) {
-            return FIX;
-        }
-
+        frontSpeedReduction = countSpeedReduction(frontBlocks, Bot.maxSpeed);
         /*jika ada daerah lumpur, oli, atau dinding */
-        if(blocks.contains(Terrain.MUD) || blocks.contains(Terrain.OIL_SPILL) || blocks.contains(Terrain.WALL)){
+        if(frontblocks.contains(Terrain.MUD) || frontblocks.contains(Terrain.OIL_SPILL) || frontblocks.contains(Terrain.WALL)){
             if(PunyaPower(PowerUps.LIZARD, myCar.powerups)){
                 return LIZARD;
             }
@@ -56,7 +56,51 @@ public class Bot {
                 int i = random.nextInt(directionList.size());
                 return new ChangeLaneCommand(directionList.get(i));
             }
+        }        
+        if (myCar.position.lane > 1) {
+            List<Lane> leftblocks = getBlocksOnLeft(myCar.position.lane, myCar.position.block, gameState);
+            leftSpeedReduction = countSpeedReduction(leftBlocks, Bot.maxSpeed);
+            /*jika ada daerah lumpur, oli, atau dinding */
+            if(leftblocks.contains(Terrain.MUD) || leftblocks.contains(Terrain.OIL_SPILL) || leftblocks.contains(Terrain.WALL)){
+                if(PunyaPower(PowerUps.LIZARD, myCar.powerups)){
+                    return LIZARD;
+                }
+
+                if (nextBlock.contains(Terrain.MUD) || nextBlock.contains(Terrain.OIL_SPILL) || nextBlock.contains(Terrain.WALL)){
+                    int i = random.nextInt(directionList.size());
+                    return new ChangeLaneCommand(directionList.get(i));
+                }
+            }
+
+        } else {
+            List<Lane> leftBlocks = new ArrayList<>();
+            leftSpeedReduction = 99;
         }
+        if (myCar.position.lane < 4) {
+            List<Lane> rightblocks = getBlocksOnRight(myCar.position.lane, myCar.position.block, gameState);
+            rightSpeedReduction = countSpeedReduction(rightBlocks, Bot.maxSpeed);
+            /*jika ada daerah lumpur, oli, atau dinding */
+            if(rightblocks.contains(Terrain.MUD) || rightblocks.contains(Terrain.OIL_SPILL) || rightblocks.contains(Terrain.WALL)){
+                if(PunyaPower(PowerUps.LIZARD, myCar.powerups)){
+                    return LIZARD;
+                }
+
+                if (nextBlock.contains(Terrain.MUD) || nextBlock.contains(Terrain.OIL_SPILL) || nextBlock.contains(Terrain.WALL)){
+                    int i = random.nextInt(directionList.size());
+                    return new ChangeLaneCommand(directionList.get(i));
+                }
+            }
+         
+        } else {
+            List<Lane> rightBlocks = new ArrayList<>();
+            rightSpeedReduction = 99;
+        }
+       
+
+        if (myCar.damage >= 2) {
+            return FIX;
+        }
+
 
         /*menggunakan command */
         if (myCar.speed <= 3){
