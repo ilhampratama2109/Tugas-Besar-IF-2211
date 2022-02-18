@@ -61,14 +61,14 @@ public class Bot {
         }        
         if (myCar.position.lane > 1) {
             List<Lane> leftblocks = getBlocksOnLeft(myCar.position.lane, myCar.position.block, gameState);
-            leftSpeedReduction = countSpeedReduction(leftBlocks, Bot.maxSpeed);
+            leftSpeedReduction = countSpeedReduction(leftblocks, Bot.maxSpeed);
         } else {
             List<Lane> leftblocks = new ArrayList<>();
             leftSpeedReduction = 99;
         }
         if (myCar.position.lane < 4) {
             List<Lane> rightblocks = getBlocksOnRight(myCar.position.lane, myCar.position.block, gameState);
-            rightSpeedReduction = countSpeedReduction(rightBlocks, Bot.maxSpeed);
+            rightSpeedReduction = countSpeedReduction(rightblocks, Bot.maxSpeed);
         } else {
             List<Lane> rightblocks = new ArrayList<>();
             rightSpeedReduction = 99;
